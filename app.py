@@ -372,6 +372,33 @@ def calibrate_camera(course_uid):
         # Pass 'calibrate' to make the sidebar link active
         active_step_number='calibrate' 
     )
+    
+@app.route("/google_auth", methods=["POST"])
+def google_auth():
+    data = request.get_json()
+    credential = data.get("credential")
+
+    if not credential:
+        return jsonify({"success": False, "error": "Missing credential"}), 400
+
+    api_session = requests.Session()
+
+    try:
+        # Forward credential to main backend ("real API" on :8080)
+        resp = api_session.post(
+            f"{API_BASE_URL}/auth/google",
+            json={"credential": credential}
+        )
+
+        if resp.ok:
+            # Save backend cookies into the frontend session
+            session["api_cookies"] = api_session.cookies.get_dict()
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "error": resp.json()}), 401
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == "__main__":
     # Run on 0.0.0.0 to be accessible on your network

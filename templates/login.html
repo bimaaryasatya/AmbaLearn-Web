@@ -6,6 +6,8 @@
     <title>Login - AmbaLearn</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div class="auth-container">
@@ -25,11 +27,48 @@
                 <button type="submit" class="btn">Login</button>
             </form>
 
+            <div style="margin: 20px 0; text-align:center; font-size:14px; color:#666;">
+                or
+            </div>
+
+            <div id="g_id_onload"
+                data-client_id="208136111256-qqtnct15vf76024sktgk3uojdmme2ndu.apps.googleusercontent.com"
+                data-context="signin"
+                data-callback="handleGoogleResponse"
+                data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="outline"
+                data-size="large">
+            </div>
+
             <div class="links">
                 <a href="{{ url_for('register') }}">Doesn't have account?</a>
                 <a href="#">Forgot Password?</a>
             </div>
         </div>
     </div>
+
+<script>
+function handleGoogleResponse(response) {
+    fetch("{{ url_for('google_auth') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: response.credential })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = "/home";
+        } else {
+            alert("Google login failed.");
+        }
+    });
+}
+</script>
+
 </body>
 </html>
