@@ -99,8 +99,12 @@
         <div class="drawer-footer">
             {% if logged_in_user %}
             <a href="{{ url_for('user_settings') }}">
-                {% set letter = logged_in_user.username[0] | upper %}
-                <div class="avatar">{{ letter }}</div>
+                {% if logged_in_user.picture %}
+                    <div class="avatar" style="background-image: url('{{ logged_in_user.picture }}'); background-size: cover; background-position: center; color: transparent; border-radius: 50%;"></div>
+                {% else %}
+                    {% set letter = logged_in_user.username[0] | upper %}
+                    <div class="avatar">{{ letter }}</div>
+                {% endif %}
                 <div class="user-info">
                     <div class="username">{{ logged_in_user.username }}</div>
                     <div class="email">{{ logged_in_user.email or 'No email' }}</div>

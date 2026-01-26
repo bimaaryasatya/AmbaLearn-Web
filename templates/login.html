@@ -15,6 +15,36 @@
             <div class="logo">
                 <span class="material-icons icon">login</span>
             </div>
+            
+            <style>
+                .flash-message.auth-flash {
+                    position: static;
+                    transform: none;
+                    margin-bottom: 16px;
+                    width: 100%;
+                    background-color: rgba(220, 38, 38, 0.1); 
+                    border: 1px solid rgba(220, 38, 38, 0.2);
+                    color: var(--color-error);
+                    justify-content: flex-start;
+                }
+                .flash-message.auth-flash.success {
+                    background-color: rgba(22, 163, 74, 0.1);
+                    border-color: rgba(22, 163, 74, 0.2);
+                    color: var(--color-success);
+                }
+            </style>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }} auth-flash">
+                <span class="material-icons icon">{{ 'check_circle' if category == 'success' else 'error' }}</span>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
             <h2>Login</h2>
             
             <form action="{{ url_for('login') }}" method="POST">
