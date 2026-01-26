@@ -9,8 +9,8 @@ app.secret_key = os.urandom(24)  # Required for Flask sessions
 # --- IMPORTANT ---
 # This URL must be the public-facing address of your *backend* machine.
 # The one you provided is perfect.
-API_BASE_URL = "http://127.0.0.1:8080"
-MEDIAPIPE_BASE_URL = "http://127.0.0.1:5001"
+API_BASE_URL = "http://45.156.85.205:8080"
+MEDIAPIPE_BASE_URL = "https://antarctica-citations-economies-unix.trycloudflare.com"
 
 # --- Authentication & API Session ---
 
